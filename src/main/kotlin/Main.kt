@@ -22,15 +22,10 @@ fun navigation(park: MutableMap<String, String>) {
     var command = readLine()
     while (true) {
         when (command) {
-            Command.startCommand -> {
-                println("Добро пожаловать в приложение парковки.")
-                command = readLine()
-            }
 
             Command.helpCommand -> {
                 println(
                     "Доступные команды:\n" +
-                            "   /start - Запуск приложения парковки;\n" +
                             "   /help - Информация о доступных командах;\n" +
                             "   /end - Завершение работы приложения;\n" +
                             "   /park - Припарковать автомобиль на свободное место;\n" +
