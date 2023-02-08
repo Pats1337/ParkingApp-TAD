@@ -6,7 +6,7 @@ fun main(args: Array<String>) {
             Command.startCommand -> {
                 println("Добро пожаловать в приложение парковки")
                 Parking.createParking()
-                navigation(Parking.parking)
+                mainMenu()
                 break
             }
 
@@ -18,7 +18,7 @@ fun main(args: Array<String>) {
     }
 }
 
-fun navigation(park: MutableMap<String, String>) {
+fun mainMenu() {
     var command = readLine()
     while (true) {
         when (command) {
@@ -54,26 +54,26 @@ fun navigation(park: MutableMap<String, String>) {
             }
 
             Command.parkCommand -> {
-                println("Для парковки Вашего автомобиля назовите следующие данные:\nМарка и модель автомобиля Гос.номер Имя и Фамилия владельца")
-                Manager.parkCar(Parking.parking, Manager.checkCorrectInputData())
+                println("Для парковки Вашего автомобиля введите следующие данные:\nМарка и модель автомобиля Гос.номер Имя и Фамилия владельца")
+                Manager.parkCar()
                 command = readLine()
             }
 
             Command.returnCommand -> {
                 println("Для возврата автомобиля назовите Ваше имя и фамилию")
-                Manager.returnCar(Parking.parking)
+                Manager.returnCar()
                 command = readLine()
             }
 
             Command.parkInfoByCarCommand -> {
                 println("Для поиска автомобиля на парковке введите его гос. номер")
-                Manager.parkInfoByCar(Parking.parking)
+                Manager.parkInfoByCar()
                 command = readLine()
             }
 
             Command.parkInfoByPlaceCommand -> {
-                println("Для вывода информации о парковочном месте введите его номер")
-                Manager.parkInfoByPlace(Parking.parking)
+                println("Для вывода информации введите номер парковочного места")
+                Manager.parkInfoByPlace()
                 command = readLine()
             }
 

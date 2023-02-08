@@ -2,36 +2,29 @@ object Manager {
 
     private var countParking = 0
 
-    fun checkCorrectInputData(): String {
-        var correctInputData = false
+    private fun getCorrectDetails(reqNumsOfArg: Int): String {
+        var correctDetails = false
         var receivedData = mutableListOf<String>()
-        while (!correctInputData) {
-            val inputData = readLine()
-            val splitInputData = inputData!!.split(" ")
-            if (splitInputData.size == 5) {
+        while (!correctDetails) {
+            val inputData = readLine().toString()
+            val splitInputData = inputData.split(" ")
+            if (splitInputData.size == reqNumsOfArg) {
                 receivedData = splitInputData.toMutableList()
-                correctInputData = true
+                correctDetails = true
             } else {
-                println("Некорректные данные.\nВведите данные в следующем порядке: \nМарка автомобиля Цвет автомобиля Гос.номер Имя владельца Фамилия владельца")
+                println("Некорректные данные. Попробуйте снова.")
             }
         }
-        return Car(
-            receivedData[0],
-            receivedData[1],
-            receivedData[2]
-        ).toString() + " " +
-                Owner(
-                    receivedData[3],
-                    receivedData[4]
-                ).toString()
+        return receivedData.joinToString(separator = " ")
     }
 
-    fun parkCar(park: MutableMap<String, String>, ownerDetails: String) {
-        val map = HashMap(park)
+    fun parkCar() {
+        val ownerDetails = getCorrectDetails(5)
+        val map = HashMap(Parking.parking)
         var i = 1
         for ((key, value) in map) {
             if (value == "Свободно") {
-                park[key] = ownerDetails
+                Parking.parking[key] = ownerDetails
                 println("Автомобиль успешно припаркован! Ваше парковочное место $key")
                 countParking++
                 break
@@ -44,72 +37,62 @@ object Manager {
         }
     }
 
-    fun returnCar(park: MutableMap<String, String>) {
-        var correctOwner = false
-        val map = HashMap(park)
+    fun returnCar() {
+        val ownerDetails = getCorrectDetails(2)
+        val map = HashMap(Parking.parking)
         var i = 1
-        while (!correctOwner) {
-            val inputData = readLine()
-            for ((key, value) in map) {
-                if (value.contains(inputData!!)) {
-                    println("Автомобиль успешно возвращен владельцу $inputData")
-                    park[key] = "Свободно"
-                    correctOwner = true
-                    break
-                } else {
-                    i++
-                    if (i == map.size) {
-                        i = 1
-                        println("Извините, введены не корректные данные. Попробуйте снова!")
+        for ((key, value) in map) {
+            if (value.contains(ownerDetails)) {
+                println("Автомобиль успешно возвращен владельцу $ownerDetails")
+                Parking.parking[key] = "Свободно"
+                break
+            } else {
+                i++
+                if (i == map.size) {
+                    i = 1
+                    println("Извините, $ownerDetails не парковал у нас свой автомобиль. Попробуйте снова!")
 
-                    }
+                }
+            }
+        }
+
+    }
+
+    fun parkInfoByCar() {
+        val ownerDetails = getCorrectDetails(1)
+        val map = HashMap(Parking.parking)
+        var i = 1
+        for ((key, value) in map) {
+            if (value.contains(ownerDetails)) {
+                println("Автомобиль с гос. номером $ownerDetails припаркован на месте $key")
+                break
+            } else {
+                i++
+                if (i == map.size) {
+                    i = 1
+                    println("Автомобиль с гос. номером $ownerDetails не найден. Попробуйте снова!")
+
                 }
             }
         }
     }
 
-    fun parkInfoByCar(park: MutableMap<String, String>) {
-        var correctNumber = false
-        val map = HashMap(park)
+    fun parkInfoByPlace() {
+        val ownerDetails = getCorrectDetails(1)
+        val map = HashMap(Parking.parking)
         var i = 1
-        while (!correctNumber) {
-            val inputData = readLine()
             for ((key, value) in map) {
-                if (value.contains(inputData!!)) {
-                    println("Автомобиль с гос. номером $inputData припаркован на месте $key")
-                    correctNumber = true
-                    break
-                } else {
-                    i++
-                    if (i == map.size) {
-                        i = 1
-                        println("Автомобиль с гос. номером $inputData не найден. Попробуйте снова!")
-
-                    }
-                }
-            }
-        }
-    }
-
-    fun parkInfoByPlace(park: MutableMap<String, String>) {
-        var correctPlace = false
-        val map = HashMap(park)
-        var i = 1
-        while (!correctPlace) {
-            val inputData = readLine()
-            for ((key, value) in map) {
-                if (key.contains(inputData!!)) {
+                if (key.contains(ownerDetails)) {
                     if (value.contains("Свободно")) {
-                        println("Парковочное место $inputData свободно")
-                        correctPlace = true
+                        println("Парковочное место $ownerDetails свободно")
                         break
                     } else {
-                        println("Парковочное место $inputData занято автомобилем: " +
-                                "${value.split(" ")[1]} " +
-                                "${value.split(" ")[2]} " +
-                                "${value.split(" ")[3]} " +
-                                "${value.split(" ")[4]}")
-                        correctPlace = true
+                        println(
+                            "Парковочное место $ownerDetails занято автомобилем: " +
+                                    "${value.split(" ")[0]} " +
+                                    "${value.split(" ")[1]} " +
+                                    "${value.split(" ")[2]} "
+                        )
                         break
                     }
                 } else {
@@ -120,7 +103,6 @@ object Manager {
 
                     }
                 }
-            }
         }
     }
 
