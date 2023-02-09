@@ -1,2 +1,2 @@
-data class Car(val model: String, val color: String, val number: String) {
+data class Car(val brand: String, val model: String, val number: String) {
 }
